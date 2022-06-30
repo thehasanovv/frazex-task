@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Users from "./pages/Users";
+import Comments from "./pages/Comments";
+import Posts from "./pages/Posts";
+import SelectedPost from "./pages/SelectedPost";
+import Layout from "./components/Layout";
+import { Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles } from "./style/globalStyles";
+import { darkTheme } from "./style/darkTheme";
+import { lightTheme } from "./style/lightTheme";
+import { useDarkMode } from "./components/DarkMode/useDarkMode";
 
 function App() {
+  const [theme, themeToggler] = useDarkMode();
+  let themeMode = theme === "light" ? lightTheme : darkTheme;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={themeMode}>
+      <Layout themeToggler={themeToggler} theme={theme}>
+        <GlobalStyles />
+        <Routes>
+          <Route path="/" element={<Users />} />
+          <Route path="/comments" element={<Comments />} />
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts/:id/comments" element={<SelectedPost />} />
+        </Routes>
+      </Layout>
+    </ThemeProvider>
   );
 }
 
